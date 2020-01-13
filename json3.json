@@ -1,0 +1,5 @@
+[
+  {"message": "a notification"},
+  {"message": "message from server request"},
+  {"message": "now process this message"}
+]

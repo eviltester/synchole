@@ -1,0 +1,20 @@
+
+header{
+    font-size: 1.2em;
+    margin-bottom: 4em;
+}
+
+header a{
+    margin: 0.5em;
+    background-color: #d2d2d2;
+    padding: 0.5em;
+    font-style: italic;
+    line-height: 2.5em;
+}
+
+body{
+    max-width: 70%;
+    margin:auto;
+    font-size: 1em;
+}
+

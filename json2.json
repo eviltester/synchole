@@ -1,0 +1,6 @@
+[
+  {"message": "a notification message"},
+  {"message": "another notification"},
+  {"message": "take no action"},
+  {"message": "process this message"}
+]

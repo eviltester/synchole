@@ -1,0 +1,71 @@
+<html>
+<head>
+
+    <link rel="stylesheet" href="css/syncstyle.css">
+
+    <style>
+        section.synchole{
+            background: #f9efb5;
+            padding: 1em;
+            border: black;
+            border-width: 2px;
+
+        }
+        section.condense {
+            max-height: 100px;
+            overflow: hidden;
+            position: relative;
+            -webkit-transition: max-height 0.75s ease 0s;
+            -moz-transition: max-height 0.75s ease 0s;
+            -ms-transition: max-height 0.75s ease 0s;
+            -o-transition: max-height 0.75s ease 0s;
+            transition: max-height 0.75s ease 0s;
+        }
+        section.condense:hover {
+            max-height: 999px;
+        }
+        section.condense:after {
+            content: ">";
+            width: 30px;
+            height: 45px;
+            position: absolute;
+            right: 0px;
+            top: 0px;
+        }
+        section.condense:hover:after {
+            content: "V";
+            width: 30px;
+            height: 45px;
+            position: absolute;
+            right: 0px;
+            top: 0px;
+        }
+
+    </style>
+</head>
+<body>
+
+<header>
+    <p> <a href="collapseable.html">Collapseable Div</a> |
+        <a href="form.html">Simple Form</a> |
+        <a href="buttons.html">Buttons Sync</a> |
+        <a href="messages.html">Message Simulator</a> |
+        <a href="shortlived.html">Shortlived Events</a>
+    </p>
+</header>
+
+<div id="collapsable">
+<section class="synchole condense">
+<h2>SyncHole</h2>
+    <p>The SyncHole is a small set of web pages with deliberate issues associated with Synchronisation,</p>
+    <p>Manually interacting with the pages should be fairly simple, but there are some deliberate bugs in there.</p>
+    <p>Just for educational value.</p>
+    <p>They are unrelated to the actual functionality for automating.</p>
+    <p>Some of the functionality you could automate with implicitWaits, some with Thread.sleep if you really wanted to, but a lot of the timings are randomly generated.
+    </p>
+    <p>Ultimately, we want you to be using explicit waits.</p>
+    <p><a id="aboutlink" href="about.html">About The SyncHole</a></p>
+</section>
+</div>
+</body>
+</html>

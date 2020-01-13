@@ -1,0 +1,59 @@
+<html>
+<head>
+    <title>Form Submit Results</title>
+    <link rel="stylesheet" href="css/syncstyle.css">
+</head>
+<body>
+
+<header>
+    <p> <a href="collapseable.html">Collapseable Div</a> |
+        <a href="form.html">Simple Form</a> |
+        <a href="buttons.html">Buttons Sync</a> |
+        <a href="messages.html">Message Simulator</a> |
+        <a href="shortlived.html">Shortlived Events</a>
+    </p>
+</header>
+
+<h1 id="thanks">Thanks For Your Submission</h1>
+
+<ul id="values">
+
+</ul>
+
+
+</form>
+</body>
+
+<script>
+
+    // get the url and parse into values to add to the list
+function getQueryParams() {
+    var url = location.search;
+    var query = url.substr(1); // get everything after ?
+    var result = {}; // create a 'hash array' for results
+    // split
+    var queryValuePairs = query.split("&");
+    for (var i = 0; i < queryValuePairs.length; i++) {
+        var valuePair = queryValuePairs[i].split("=");
+        result[valuePair[0]] = decodeURIComponent(valuePair[1]);
+    }
+    return result;
+}
+
+function renderAsList(obj){
+
+    for (var key in obj) {
+        var ul = document.getElementById("values");
+        var li = document.createElement("li");
+        li.setAttribute("data-name", key);
+        li.setAttribute("data-value", obj[key]);
+        li.appendChild(document.createTextNode(key + " = " + obj[key]));
+        ul.appendChild(li);
+    }
+
+}
+
+setTimeout(function(){renderAsList(getQueryParams());},1000);
+
+</script>
+</html>

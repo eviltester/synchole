@@ -1,0 +1,118 @@
+<html>
+<head>
+<title>Buttons</title>
+    <link rel="stylesheet" href="css/syncstyle.css">
+</head>
+<body>
+
+<header>
+    <p> <a href="collapseable.html">Collapseable Div</a> |
+        <a href="form.html">Simple Form</a> |
+        <a href="buttons.html">Buttons Sync</a> |
+        <a href="messages.html">Message Simulator</a> |
+        <a href="shortlived.html">Shortlived Events</a>
+    </p>
+</header>
+
+
+<h1>Buttons</h1>
+
+<h2>Easy To Sync</h2>
+
+<p id="easybuttonmessage">Click all 4 buttons.</p>
+
+<div id="easybuttons">
+
+</div>
+
+<h2>Harder To Sync</h2>
+
+<p id="buttonmessage">Clickable Buttons.</p>
+
+<div id="buttons">
+
+    <button id="button01" disabled>One</button>
+    <button id="button02" disabled>Two</button>
+    <button id="button03" disabled>Three</button>
+
+</div>
+
+<script>
+
+window.onload = function() {
+
+
+    function createButton(anId, text, where, atend){
+        var button = document.createElement("button");
+        button.innerHTML = text;
+        button.setAttribute("id", anId);
+        var body = document.getElementById(where);
+        if(atend){
+            body.appendChild(button);
+        }else{
+            body.prepend(button);
+        }
+        return button;
+    }
+
+    setTimeout(function(){
+        button=createButton("button00", "start", "buttons", false);
+        button.onclick = function () {
+            setTimeout(enableButton, 1000, "button01");
+        }
+    },1000);
+
+    function createEasyButton(id){
+        buttonnames = ["Start", "One", "Two", "Three"];
+        button = createButton("easy0" + id, buttonnames[id], "easybuttons", true);
+        if(id<(buttonnames.length-1)) {
+            button.onclick = function () {
+                setTimeout(createEasyButton, id * 2000, id+1);
+            }
+        }else{
+            button.onclick = function(){
+                document.getElementById("easybuttonmessage").innerText = "All Buttons Clicked";
+            }
+        }
+    }
+
+
+    createButton("easy00", "start", "easybuttons", false);
+
+    document.getElementById("easy00").onclick = function() {
+        createEasyButton(1);
+    }
+
+
+    function enableButton(anId) {
+        document.getElementById(anId).disabled = false;
+    }
+
+    function disableButton(anId) {
+        document.getElementById(anId).disabled = true;
+    }
+
+    function setButtonMessage(text) {
+        document.getElementById("buttonmessage").innerText = text;
+    }
+
+    setButtonMessage("Click Buttons In Order");
+
+    document.getElementById("button01").onclick = function () {
+        setTimeout(enableButton, 3000, "button02");
+    }
+    document.getElementById("button02").onclick = function () {
+        setTimeout(enableButton, 6000, "button03");
+    }
+    document.getElementById("button03").onclick = function () {
+        setButtonMessage("All Buttons Clicked");
+        setTimeout(disableButton, 1000, "button01");
+        setTimeout(disableButton, 1000, "button02");
+        setTimeout(disableButton, 1000, "button03");
+        setTimeout(setButtonMessage, 2000, "Clickable Buttons");
+        setTimeout(setButtonMessage, 4000, "Click Buttons In Order");
+    }
+}
+</script>
+</body>
+</html>

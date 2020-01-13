@@ -1,0 +1,138 @@
+<html>
+<head>
+    <title>JSON Messages</title>
+    <link rel="stylesheet" href="css/syncstyle.css">
+</head>
+<body>
+
+<header>
+    <p> <a href="collapseable.html">Collapseable Div</a> |
+        <a href="form.html">Simple Form</a> |
+        <a href="buttons.html">Buttons Sync</a> |
+        <a href="messages.html">Message Simulator</a> |
+        <a href="shortlived.html">Shortlived Events</a>
+    </p>
+</header>
+
+<h1>Messages</h1>
+<div id="messagesstatus">
+    <p id="messagecount">Message Count: 0</p>
+</div>
+<div id="messagesdisplay">
+    <ul id="messageslist">
+
+    </ul>
+</div>
+
+<script>
+
+    var liveMessages=0;
+    var totalRequestsMade=0;
+    var renderingQueueCount = 0;
+    var totalMessagesReceived = 0;
+    var allMessages = [];
+
+    function incrementMessageRequestsCount(){
+        totalRequestsMade++;
+        liveMessages++;
+        displayMessageRequestCount();
+    }
+
+    function displayMessageRequestCount(){
+        document.getElementById("messagesstatus").innerHTML="";
+        document.getElementById("messagesstatus").innerHTML="<p id='messagecount'>Message Count: " + liveMessages + " : " + renderingQueueCount + "</p>";
+        console.log("Message Requests " + liveMessages);
+    }
+
+    function decrementMessageRequestsCount(){
+        liveMessages--;
+        displayMessageRequestCount();
+    }
+
+
+    function scheduleJSON(callback, filename){
+        // schedule a call to json in a random set of milliseconds
+        var makeCallIn = Math.floor((Math.random() * 4000) + 1000);
+        incrementMessageRequestsCount();
+        window.setTimeout(loadJSON, makeCallIn, callback, filename);
+    }
+
+    function loadJSON(callback, filename) {
+
+        displayMessage("making call");
+
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.overrideMimeType("application/json");
+        xmlhttp.open('GET', filename, true);
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == "200") {
+                displayMessage("processing results");
+                decrementMessageRequestsCount();
+                callback(xmlhttp.responseText);
+            }
+        };
+        xmlhttp.send(null);
+    }
+
+    function displayJSON(messageArray){
+        var messages = JSON.parse(messageArray);
+        messages.forEach(displayMessagePaused);
+    }
+
+
+
+    function displayMessage(aMessage){
+        allMessages.push(aMessage);
+        document.getElementById("messageslist").innerHTML="";
+        displayAllMessages();
+        console.log(aMessage);
+    }
+
+    function displayAllMessages(){
+        var messageText="";
+        var messagesLength = allMessages.length;
+        for(var x=0;x<messagesLength; x++){
+            messageText+="<li>"+allMessages[x]+"</li>";
+        }
+        document.getElementById("messageslist").innerHTML="";
+        document.getElementById("messageslist").innerHTML=messageText;
+    }
+
+
+    function displayQueuedMessage(aMessage){
+        displayMessage(aMessage);
+        renderingQueueCount--;
+        if(renderingQueueCount==0 && liveMessages==0 && callBackWhenNoQueuedMessages!=undefined){
+            callBackWhenNoQueuedMessages();
+            callBackWhenNoQueuedMessages=undefined;
+        }
+    }
+
+
+    function displayMessagePaused(aMessage){
+        // pause between 1 and 4 seconds
+        renderingQueueCount++;
+        totalMessagesReceived++;
+        setTimeout(displayQueuedMessage, Math.floor((Math.random() * 4000) + 1000), aMessage.message);
+    }
+
+    var randomNumberOfMessageFiles = Math.floor((Math.random() * 5) + 3);
+
+    for(var x=0;x<randomNumberOfMessageFiles;x++){
+        var maxFileId = 3;
+        var fileId = Math.floor((Math.random() * maxFileId) + 1);
+        scheduleJSON(displayJSON, "json" + fileId + ".json");
+    }
+
+    var callBackWhenNoQueuedMessages;
+
+    function onMessageQueueEmpty(aCallback){
+        callBackWhenNoQueuedMessages = aCallback;
+    }
+
+    setInterval(displayMessageRequestCount, 1000);
+
+</script>
+
+</body>
+</html>
